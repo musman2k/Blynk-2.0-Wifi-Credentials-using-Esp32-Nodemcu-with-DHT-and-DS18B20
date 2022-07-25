@@ -56,6 +56,7 @@
 ![alt text](https://github.com/musman2k/Blynk-Wifi-Credentials-using-Esp32-Nodemcu-with-DHT-and-DS18B20/blob/main/Screenshots/8.jpg?raw=true)
  ***
 •	Code for retrieving data from DHT:
+***
 ![alt text](https://github.com/musman2k/Blynk-Wifi-Credentials-using-Esp32-Nodemcu-with-DHT-and-DS18B20/blob/main/Screenshots/9.jpg?raw=true)
  ***
 •	Following command is to erase all the data stored in eeprom, in case you want to change wifi connections. In order to be use it you need to install a button and connect with the D8 data pin on ESP8266. However, if you only have one wifi connection just leave it as it is.
