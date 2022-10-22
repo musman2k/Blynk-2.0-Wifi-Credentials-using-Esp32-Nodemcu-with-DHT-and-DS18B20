@@ -43,10 +43,7 @@
 ***
 ![alt text](https://github.com/musman2k/Blynk-Wifi-Credentials-using-Esp32-Nodemcu-with-DHT-and-DS18B20/blob/main/Screenshots/5.jpg?raw=true) 
  ***
-•	Blynk Widgets and there assigned virtual pins. Make sure you aren’t using same virtual pin to send data to multiple Widgets.
-***
-![alt text](https://github.com/musman2k/Blynk-Wifi-Credentials-using-Esp32-Nodemcu-with-DHT-and-DS18B20/blob/main/Screenshots/6.jpg?raw=true)
- ***
+
 •	Function for DHT and DS18B20:
 ***
 ![alt text](https://github.com/musman2k/Blynk-Wifi-Credentials-using-Esp32-Nodemcu-with-DHT-and-DS18B20/blob/main/Screenshots/7.jpg?raw=true)
