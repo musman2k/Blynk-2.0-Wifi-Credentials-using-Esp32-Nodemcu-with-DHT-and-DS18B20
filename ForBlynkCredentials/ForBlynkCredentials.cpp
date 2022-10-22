@@ -1,11 +1,4 @@
 
-/*!
-   This is a code for creating a web page of wifi credentials
-
-*/
-
-
-
 #include "Arduino.h"
 #include "ForBlynkCredentials.h"
 
