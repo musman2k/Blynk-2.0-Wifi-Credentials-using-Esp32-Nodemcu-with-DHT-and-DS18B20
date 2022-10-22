@@ -21,7 +21,7 @@ credentials Credentials;
 //Variables
 char auth_token[33];
 bool connected_to_internet = 0;
-const int Erasing_button = 15;
+const int Erasing_button = 13;
 
 
 
@@ -50,14 +50,10 @@ DallasTemperature DS18B20(&oneWire);
 
 BlynkTimer timer;
 
-  WidgetLED led1(V7);
-  WidgetLED led2(V8);
-  WidgetLED led3(V9);
-  WidgetLCD lcd1(V13);
-  WidgetLED led4(V10);
-  WidgetLED led5(V11);
-  WidgetLED led6(V12);
-  WidgetLCD lcd2(V14);
+#define netAccessLEDPin D5   //D5
+
+  WidgetLCD lcd1(V7);
+  WidgetLCD lcd2(V8);
 
   
 //====================================================
@@ -67,13 +63,14 @@ BlynkTimer timer;
 //====================================================
 void sendSensor()
 {
-  if (digitalRead(Erasing_button) == HIGH)
-  {
-
-    Credentials.Erase_eeprom();
-    digitalWrite(Erasing_button, LOW);
-    ESP.restart();
-  }
+//  if (digitalRead(Erasing_button) == 0)
+//  {
+//
+//    Credentials.Erase_eeprom();
+//    EEPROM.commit();
+//    ESP.restart();
+//  }
+  NetLED();
   
   float temp;
   DS18B20.requestTemperatures();
@@ -84,7 +81,7 @@ void sendSensor()
   delay(1000);//DHT11 recommends waiting 2 seconds ==> 2000 = 1000(DS18B20)+1000(this)  
   float h = dht.readHumidity();
   float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
- 
+
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
@@ -93,50 +90,45 @@ void sendSensor()
   // Please don't send more that 10 values per second.
   Blynk.virtualWrite(V5, t);
   Blynk.virtualWrite(V6, h);
+  Blynk.virtualWrite(V4, temp);
   if (t>0 && t<15)        
   { 
     Serial.print("COLD   "); 
-    led1.off(); led2.off(); led3.on();
-    lcd1.print(0, 0, "COLD"); 
+    lcd1.print(0, 0, "COLD");
+  
   }
   else if (t>14 && t<30)  
   { 
     Serial.print("WARM   "); 
-    led1.off(); led2.off(); led3.on();
     lcd1.print(0, 0, "WARM");  
   }
   
   else if (t>30 && t<45)  
   { 
     Serial.print("HOT   "); 
-    led1.on(); led2.on(); led3.off();
     lcd1.print(0, 0, "HOT");  
   }
   
   else                    
   { 
     Serial.print("VERY HOT  ");
-    led1.on(); led2.off(); led3.off();
     lcd1.print(0, 0, "VERY HOT  ");  
   }
 
   if (h>0 && h<30)        
   { 
     Serial.println("LOW HUMIDITY"); 
-    led4.on(); led5.off(); led6.off();
     lcd1.print(0, 1, "LOW HUMIDITY");    
   }
   
   else if (h>30 && h<50)  
   { 
     Serial.println("Normal HUMIDITY"); 
-    led4.off(); led5.on(); led6.off();
     lcd1.print(0, 1, "Normal HUMIDITY");    
   }
   else                    
   {
     Serial.println("HIGH HUMIDITY");
-    led4.off(); led5.off(); led6.on();
     lcd1.print(0, 1, "HIGH HUMIDITY");     
   }
 //  String tempVar = "Temperature OutSide: " + temp + "C";
@@ -156,7 +148,18 @@ void sendSensor()
 }
 //====================================================
 //====================================================
-
+// NetLED setup code
+void NetLED()
+{
+ if (WiFi.status() == WL_CONNECTED)
+    {
+  digitalWrite (netAccessLEDPin, HIGH); //turn NetLED on
+  return;
+    }
+    
+    digitalWrite (netAccessLEDPin, LOW);  //turn NetLED off
+    Serial.println("Wifi Unreachable!");
+}
 
 
 void setup()
@@ -165,6 +168,7 @@ void setup()
 
   Serial.begin(115200);
   pinMode(Erasing_button, INPUT);
+  pinMode(netAccessLEDPin, OUTPUT);
 
   for (uint8_t t = 4; t > 0; t--) {
     Serial.println(t);
@@ -177,7 +181,7 @@ void setup()
   if (Credentials.credentials_get())
   {
 
-    Blynk.config(auth_token);
+    Blynk.config(auth_token, "blynk.cloud", 80);
     connected_to_internet = 1;
 
   }
