@@ -1,7 +1,4 @@
-/*!
- *This a code to config wifi and blynk token 
- *
- */
+
 
 
 
