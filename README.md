@@ -1,4 +1,4 @@
-# Blynk-Wifi-Credentials-using-Esp32-Nodemcu-with-DHT-and-DS18B20
+# Blynk-2.0-Wifi-Credentials-using-Esp32-Nodemcu-with-DHT-and-DS18B20
 
 ##Manual
 ***
